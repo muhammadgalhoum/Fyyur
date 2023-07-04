@@ -576,26 +576,26 @@ def edit_artist(artist_id):
 def edit_artist_submission(artist_id):
   # artist record with ID <artist_id> using the new attributes
   try:
-      artist = Artist.query.get(artist_id)
-      form = ArtistForm(request.form, obj=artist)
-      
-      if form.validate():
-          # Set default values for nullable fields if empty
-          form.populate_obj(artist)
-          db.session.commit()
-          # on successful flash success
-          flash('Artist info updated successfully!')
-      else:
-        # Handle form validation errors
-        print(sys.exc_info())
-        flash(form.errors)
-  except:
-      db.session.rollback()
-      # on unsuccessful flash success
+    artist = Artist.query.get(artist_id)
+    form = ArtistForm(request.form, obj=artist)
+    
+    if form.validate():
+      # Set default values for nullable fields if empty
+      form.populate_obj(artist)
+      db.session.commit()
+      # on successful flash success
+      flash('Artist info updated successfully!')
+    else:
+      # Handle form validation errors
       print(sys.exc_info())
-      flash('An error occurred when trying to update Artist Info!')
+      flash(form.errors)
+  except:
+    db.session.rollback()
+    # on unsuccessful flash success
+    print(sys.exc_info())
+    flash('An error occurred when trying to update Artist Info!')
   finally:
-      db.session.close()
+    db.session.close()
   return redirect(url_for('show_artist', artist_id=artist_id))
 
 
